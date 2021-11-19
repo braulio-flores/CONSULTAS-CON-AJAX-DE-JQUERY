@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Peticiones AJAX</title>
+</head>
+<body>
+    <input type="text" name="usuario" id="usuario" placeholder="Usuario" /><br />
+    <input type="text" name="password" id="password" placeholder="Password" /><br />
+    <button onclick="guardar()">Guardar</button>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script>
+    // PRIMERA PETICION AJAX CON JQUERY METODO POST Y URL ENCODED
+        const guardar = () => {
+            let persona = {
+                usuario: document.getElementById('usuario').value,
+                password: document.getElementById('password').value
+            }
+            let urlencoded = `usuario=${document.getElementById('usuario').value}&password=${document.getElementById('password').value}`;
+            $.ajax({
+              url:'procesar.php',
+              // method: 'get',SI SE UTILIZA GET ES URLENCODED
+              method: 'post',
+              // data:urlencoded, //FUNCIONA MUY BIEN PARA POST Y GET
+              //URL ENCODED O JSON (CADENA), lo que se va a mandar
+              data: JSON.stringify(persona), //OTRA ALTERNATIVA A PARTE DE URLENCODED, MANDARLO COMO JSON
+              //PERO EN EL PRPOCESAR SE DEBE DE DESENCODE
+              dataType:'json',//html por defecto
+              success:function(res){
+                console.log("Extraemos todo el json");
+                console.log(res);
+                console.log("Extraemos algun dato, en este caso por ejemplo la contraseña");
+                console.log(res.password);
+              },
+              error:function(error){
+                console.error(error);
+              }
+            });
+        }
+    </script>
+</body>
+</html>
